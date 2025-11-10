@@ -1,21 +1,33 @@
-import React, { useMemo, useState } from 'react';
-import { products } from '../data/products';
+import React, { useMemo, useState, useEffect } from 'react';
+import type { Product } from '../types';
+import { getProducts } from '../api/productApi'; // Importa desde la API simulada
 import ProductCard from './ProductCard';
-
-const parsePrice = (precio: string) => {
-  // Convierte "$59.990 CLP" a número 59990
-  const digits = precio.replace(/[^0-9]/g, '');
-  return Number(digits) || 0;
-};
+import { parsePrice } from '../utils/price'; // Importa la función parsePrice
 
 const ProductList: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
   const [category, setCategory] = useState('Todas');
   const [sort, setSort] = useState<'none' | 'asc' | 'desc'>('none');
+
+  // Hook useEffect para cargar datos al montar el componente
+  useEffect(() => {
+    setLoading(true);
+    getProducts()
+      .then(data => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error al cargar productos: ", err);
+        setLoading(false);
+      });
+  }, []); // El array vacío asegura que se ejecute solo una vez
 
   const categories = useMemo(() => {
     const cats = Array.from(new Set(products.map((p) => p.categoria)));
     return ['Todas', ...cats];
-  }, []);
+  }, [products]);
 
   const filtered = useMemo(() => {
     let items = products.slice();
@@ -23,7 +35,7 @@ const ProductList: React.FC = () => {
     if (sort === 'asc') items = items.sort((a, b) => parsePrice(a.precio) - parsePrice(b.precio));
     if (sort === 'desc') items = items.sort((a, b) => parsePrice(b.precio) - parsePrice(a.precio));
     return items;
-  }, [category, sort]);
+  }, [category, sort, products]);
 
   return (
     <section>
@@ -47,8 +59,11 @@ const ProductList: React.FC = () => {
         </div>
       </div>
 
+      {/* Indicador de carga */}
+      {loading && <p>Cargando productos...</p>}
+
       <div className="product-grid">
-        {filtered.map((product) => (
+        {!loading && filtered.map((product) => (
           <ProductCard key={product.codigo} product={product} />
         ))}
       </div>

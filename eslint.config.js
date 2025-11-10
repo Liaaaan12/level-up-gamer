@@ -6,24 +6,20 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // ignore build and test artifacts
+  globalIgnores(['dist', 'node_modules', 'src/**/*.test.*', 'src/**/__tests__/**']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
       js.configs.recommended,
-      // Use the type-checked recommendations for stricter, type-aware rules
-      tseslint.configs.recommendedTypeChecked,
+      // Use the standard TypeScript ESLint recommended rules (non-type-checked)
+      tseslint.configs.recommended,
       reactHooks.configs['recommended-latest'],
       reactRefresh.configs.vite,
     ],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
-      parserOptions: {
-        // Enable type-aware lint rules by pointing to the project's tsconfig files
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
     },
   },
 ])

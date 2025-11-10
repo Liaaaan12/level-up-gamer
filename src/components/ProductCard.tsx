@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { Product } from '../types';
 import './ProductCard.css';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart';
 
 interface ProductCardProps {
   product: Product;

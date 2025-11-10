@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart';
 import { formatPrice } from '../utils/price';
 
 const CartPage: React.FC = () => {

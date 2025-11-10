@@ -1,6 +1,6 @@
 import React from 'react';
 import './CartDrawer.css';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../context/useCart';
 
 type Props = {
   open: boolean;

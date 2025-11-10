@@ -1,25 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { Product } from '../types';
 import { parsePrice } from '../utils/price';
-
-type CartItem = {
-  product: Product;
-  quantity: number;
-};
-
-type CartContextType = {
-  items: CartItem[];
-  addItem: (product: Product, qty?: number) => void;
-  removeItem: (codigo: string) => void;
-  updateQuantity: (codigo: string, qty: number) => void;
-  clear: () => void;
-  totalCount: () => number;
-  totalPrice: () => number; // devuelve total en CLP (número)
-};
-
-const CartContext = createContext<CartContextType | undefined>(undefined);
+import type { CartItem, CartContextType } from './cartTypes';
 
 const CART_STORAGE_KEY = 'levelup_cart_v1';
+
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [items, setItems] = useState<CartItem[]>(() => {
@@ -36,7 +22,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
     } catch {
-      // ignore write errors
+      // ignore
     }
   }, [items]);
 
@@ -90,4 +76,4 @@ export const useCart = (): CartContextType => {
   return ctx;
 };
 
-// Nota: no exportar el contexto como default para evitar advertencias de fast-refresh.
+export default CartContext;
