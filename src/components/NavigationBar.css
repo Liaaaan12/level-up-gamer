@@ -17,7 +17,7 @@
 
 .navbar li a {
   display: block;
-  padding: 1.2rem 2rem;
+  padding: 0.9rem 1rem;
   font-family: 'Orbitron', sans-serif;
   font-size: 1.1em;
   font-weight: 700;
@@ -37,4 +37,10 @@
 
   /* --- Animación --- */
   transform: translateY(-3px);
+}
+
+/* Make nav items more uniform on wide screens */
+@media (min-width: 1024px) {
+  .navbar ul { justify-content: flex-start; padding-left: 1rem; gap: 0.5rem }
+  .navbar li a { min-width: 140px; text-align: center; border-radius: 8px }
 }

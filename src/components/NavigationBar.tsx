@@ -1,17 +1,24 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './NavigationBar.css';
+
+const categories = [
+  'PC Gamers',
+  'Notebooks',
+  'Consolas',
+  'Periféricos',
+  'Sillas Gamers',
+  'Juegos',
+  'Merchandising',
+];
 
 const NavigationBar: React.FC = () => {
   return (
     <nav className="navbar">
       <ul>
-        <li><a href="#">PC Gamers</a></li>
-        <li><a href="#">Notebooks</a></li>
-        <li><a href="#">Consolas</a></li>
-        <li><a href="#">Periféricos</a></li>
-        <li><a href="#">Sillas Gamers</a></li>
-        <li><a href="#">Juegos</a></li>
-        <li><a href="#">Merchandising</a></li>
+        {categories.map((c) => (
+          <li key={c}><Link to={`/shop`}>{c}</Link></li>
+        ))}
       </ul>
     </nav>
   );
